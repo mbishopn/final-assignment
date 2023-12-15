@@ -10,10 +10,12 @@ function App() {
     <>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LoginForm />}/>
-        <Route path="/main" element={<GroceriesApp />}/>
-        <Route path="*" element={<NotFound/>}/>
 
+
+        <Route path="/" element={<LoginForm />}/>
+
+        <Route path="*" element={<NotFound/>}/>
+              <Route path="/main" element={<GroceriesApp />}/>
       </Routes>
     </BrowserRouter>
 

@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUser } from "./utilities/dbFunctions";
+import { useForm } from "react-hook-form";
 
 export default function CreateUser() {
 
   const navigate = useNavigate();
 
   const [user, setUser] = useState({ username: "", password: "" }) // hook for form data
-
+  const {register, handleSubmit, setValue, reset, formState: { errors } } = useForm({})
 
   const [postResponse, setPostResponse] = useState(""); // get API responses
 
@@ -33,27 +34,29 @@ export default function CreateUser() {
   return (
     <div className="login">
       <h2>Create User</h2>
-      <form action="" onSubmit={handleOnSubmit}>
+      <form action="" onSubmit={handleSubmit(handleOnSubmit)}>
         <label htmlFor="username">Username: </label>
         <input
           type="email"
-          name="username"
+          {...register("username",{required: "you must enter a username"})}
           id="username"
           value={user.username}
           onChange={handleOnChange}
-        />
+         
+        /><p>{errors.username?.message}</p>
         <br />
         <label htmlFor="password">Password: </label>
         <input
           type="text"
-          name="password"
+          {...register("password",{required: "can't use blank passwords"})}
           id="password"
           value={user.password}
           onChange={handleOnChange}
-        />
+
+        /><p>{errors.password?.message}</p>
         <br/>
         <br />
-        {postResponse==""?<><button onClick={handleOnSubmit}>Submit</button><button onClick={()=>navigate("/")}>Back to Login</button></>:""}
+        {postResponse==""?<><button >Submit</button><button onClick={()=>navigate("/")}>Back to Login</button></>:""}
      
         {postResponse==""?"":<button onClick={()=>navigate("/")}>Back to Login</button>}
       </form>

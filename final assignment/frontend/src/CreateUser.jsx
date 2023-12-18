@@ -10,7 +10,7 @@ export default function CreateUser() {
   const navigate = useNavigate();
 
   const [user, setUser] = useState({ username: "", password: "" }) // hook for form data
-  const {register, handleSubmit, setValue, reset, formState: { errors } } = useForm({})
+  const {register, handleSubmit, formState: { errors } } = useForm({})
 
   const [postResponse, setPostResponse] = useState(""); // get API responses
 
@@ -22,7 +22,7 @@ export default function CreateUser() {
   }
 
   const handleOnSubmit = (evt) => {               // calls createUser function and return is response
-    evt.preventDefault();
+    evt.preventDefault;
     createUser(user)
     .then((result)=>setPostResponse(result))
     setUser({                                     // clean the form
@@ -47,7 +47,7 @@ export default function CreateUser() {
         <br />
         <label htmlFor="password">Password: </label>
         <input
-          type="text"
+          type="password"
           {...register("password",{required: "can't use blank passwords"})}
           id="password"
           value={user.password}
@@ -56,7 +56,7 @@ export default function CreateUser() {
         /><p>{errors.password?.message}</p>
         <br/>
         <br />
-        {postResponse==""?<><button >Submit</button><button onClick={()=>navigate("/")}>Back to Login</button></>:""}
+        {postResponse==""?<><button onClick={handleSubmit(handleOnSubmit)} >Submit</button><button onClick={()=>navigate("/")}>Back to Login</button></>:""}
      
         {postResponse==""?"":<button onClick={()=>navigate("/")}>Back to Login</button>}
       </form>

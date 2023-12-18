@@ -16,11 +16,12 @@ server.use(cors());
 
 mongoose
   .connect(
-    "mongodb+srv://admin:database1234@comp1013-cluster.elf6h5d.mongodb.net/products?retryWrites=true&w=majority"
+    // "mongodb+srv://admin:database1234@comp1013-cluster.elf6h5d.mongodb.net/products?retryWrites=true&w=majority"
+    "mongodb+srv://admin:admin@cluster0.dowovpy.mongodb.net/products"
   )
   .then((result) => {
     server.listen(port, () => {
-      console.log(`Lisening on ${port}...\nConnected to DB`);
+      console.log(`Listening on ${port}...\nConnected to DB`);
     });
   })
   .catch((error) => console.log(error));
@@ -37,12 +38,14 @@ server.get("/products", async (request, response) => {
 server.post("/submitProduct", async (request, response) => {
   const productData = ({ id, productName, brand, quantity, image, price } =
     request.body);
-  const newProduct = new Product(productData);
-  const saveProduct = await newProduct.save();
+  const newProduct = new Product(productData)
+  const saveProduct = await newProduct.save()
   if (saveProduct) {
-    response.send("Product Submitted");
+    response.send("Product successfully Added")
+    console.log("Product succesfully added...")
   } else {
-    response.send("Failed!!!");
+    response.send("Failed!!!")
+    console.log("Addition failed!!")
   }
 });
 
@@ -54,11 +57,14 @@ server.delete("/products/:id", async (request, response) => {
   deleteProduct ? response.send("Product Deleted") : response.send("FAILED!!");
 });
 
-server.patch("/products/:id", async (request, response) => {
-  const { id } = request.params;
+server.patch("/products/:_id", async (request, response) => {
+  const { _id } = request.params;
   const product = request.body;
+  console.log(product)
+ // console.log(id)
+  console.log(_id)
   const patchProduct = await Product.updateOne(
-    { _id: new mongoose.Types.ObjectId(id) },
+    { _id: new mongoose.Types.ObjectId(_id) },
     { $set: product }
   );
   patchProduct
@@ -76,7 +82,7 @@ server.post("/register", async (request, response) => {
   const saveUser = await newUser.save();
   saveUser
     ? response.send("New user has been created")
-    : response.send("failed to store new user");
+    : response.send("Failed to store new user");
 });
 
 ///////////////user verfication post

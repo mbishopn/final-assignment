@@ -1,8 +1,11 @@
+// This component was modified to work with Link and add the routing to Edit button
+
+import { Link } from "react-router-dom";
+
 export default function InventoryCard({
   list,
   onClick,
   handleProductDelete,
-  handleToggleEdit,
 }) {
   return (
     <div className="Inventory-Container">
@@ -17,9 +20,7 @@ export default function InventoryCard({
           </p>
           <button onClick={() => onClick(l)}>Add to cart</button>
           <div className="Edit-Delete-Container">
-            <button className="Edit-Button" onClick={() => handleToggleEdit(l)}>
-              Edit
-            </button>
+            <Link to="/editProduct" state={{product: l}}><button className="Edit-Button">Edit</button></Link>
             <button
               className="Remove-Button"
               onClick={() => handleProductDelete(l)}

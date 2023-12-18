@@ -1,93 +1,71 @@
-import axios from "axios"
+// Login Component - ask for credentials to authenticate user and creates a cookie
+//                   authenticated users are redirected to main App
+
 import { useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Cookies from "js-cookie"
+import { userLogin } from "./utilities/dbFunctions";
 
-export default function LoginUser() {
-    const [formData, setFormData] = useState({
-        username: "",
-        password: "",
-    });
-    const [postResponse, setPostResponse] = useState("");
-    const [jwtCookie, setJwtCookie] = useState("")
-const navigate = useNavigate();
+export default function LoginForm() {
+    const navigate = useNavigate();
 
-const createCookie = (Cookie) => {
-    Cookies.set("jwt-cookie", cookie)
-}
-   
+    const [formData, setFormData] = useState({username: "", password: ""}) // hook for the login form
+    const [postResponse, setPostResponse] = useState("");   // hook for API responses
 
-    const handleOnChange = (evt) => {
+    const handleOnChange = (evt) => {                       // to see form changing as user writes
         const { name, value } = evt.target;
         setFormData((prevData) => {
             return {
                 ...prevData,
                 [name]: value,
-            };
-        });
-    };
-
-    const postToDo = async (user) => {
-        const postUser = { ...user };
-        const post = await axios
-        .post("http://localhost:3000/login", postUser)
-        .then((response) => {
-            setPostResponse(response.data.message)
-                    if(response.data.message == "Successful Login"){
-                const jwtCookie = createCookie(response.data.token)
-                setJwtCookie(jwtCookie)
             }
-        })      
+        })
     }
-  
 
-    const postUser = async (evt) => {
+    const onLogin = async (evt) => {                   //  handles login proccess
         evt.preventDefault();
-        console.log("here!");
-        postToDo(formData);
-        setFormData({
-            username: "",
-            password: "",
-        });
+        userLogin(formData)                             // function to login passing form data
+        .then((result)=>{                               // if true, means access granted
+        if(result.answer)
+            {
+                Cookies.set("jwt-cookie",result.token)  // creates a cookie based on token returned
+                navigate("/main")                       // reditecs user to main Groceries App
+            }
+        else
+            {setPostResponse(result.msg)}               // if false, let he user know
+        })
     }
 
-    const handleLogin = (message) => {
-        return message == "Successful Login"
-        ? navigate("/main") 
-        : console.log("No")
-    }
     return ( 
         <div className="login">
             <h1>Groceries App</h1>
-            <form action="" onSubmit={postUser}>
+            <form action="" onSubmit={onLogin}>
                 <label htmlFor="username">Username </label>
                 <input 
-                type="text" 
-                name="username" 
-                id="username"
-                onChange={handleOnChange}
-                value={formData.username}
-                required 
+                    type="text" 
+                    name="username" 
+                    id="username"
+                    onChange={handleOnChange}
+                    value={formData.username}
+                    required 
                 />
                 <p></p>
                 <label htmlFor="password">Password </label>
                 <input 
-                type="password" 
-                name="password" 
-                id="password" 
-                onChange={handleOnChange}
-                value={formData.password}
-                required
+                    type="password" 
+                    name="password" 
+                    id="password" 
+                    onChange={handleOnChange}
+                    value={formData.password}
+                    required
                 />
                 <br />
-                {/* <button onClick={() => handleLogin(postResponse)}>Login</button> */}
                 <button>Login</button>
                 
-                <p>not a member yet? click <a href="/register"> here</a> to join</p>
+                <p>Not a member yet? click <Link to="/register"> here</Link> to join</p>
                
             </form>
             {<p className="logintext">{postResponse}</p>}
-            {<p>{jwtCookie} </p>}
         </div>
     );
 }

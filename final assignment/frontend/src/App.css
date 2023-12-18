@@ -1,14 +1,20 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+   display:flex;
+  /*justify-content: center;*/
+  flex-direction: column; 
+
+  /* width:100%; */
 }
 
 .GroceriesApp-Container {
   display: flex;
   justify-content: space-around;
-  max-width: 800px;
+  /* max-width: 800px; */
   min-width: 550px;
 }
 
@@ -87,9 +93,13 @@ img {
 }
 
 .Form-Container {
-  width: 100%;
+  width: 40%;
   display: flex;
   justify-content: center;
+  /* align-self: center; */
+  place-self: center;
+  margin-top:20vw;
+
 }
 
 .Form-Container form {
@@ -129,4 +139,64 @@ img {
   padding-right: 20px;
   padding-bottom: 20px;
   padding-top: 20px;
+  min-width: 281px;
+  width:250px;
+  align-self: center;
+  margin-top:20%;
+
+}
+.notFound{
+  font-size: 50px;
+  height: 150px;
+}
+.NavBar{
+  display:flex;
+  align-items: center;
+/* position: absolute; */
+top:1rem;
+ height: 50px;
+ width:95%;
+  background-color: rgb(33, 3, 132);
+  color:rgb(255, 255, 255);
+  font-size:15px;
+  padding:5px 30px 5px;
+  border-radius: 2rem;
+  justify-content: space-between;
+  min-width: 350px;
+}
+
+.not-authorized-container {
+  text-align: center;
+  margin-top: 50px;
+  border: 2px solid wheat;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #333; /* Dark background color */
+  color: #fff; /* Light text color on dark background */
+}
+
+.not-authorized-title {
+  color: red;
+  border-bottom: 1px solid wheat;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.not-authorized-message {
+  color: red;
+}
+
+.not-authorized-link a {
+  color: green;
+  text-decoration: none;
+  border: 1px solid green;
+  padding: 8px;
+  border-radius: 5px;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.not-authorized-link a:hover {
+  text-decoration: underline;
+  background-color: #e0f8e0; /* Light green on hover */
 }
